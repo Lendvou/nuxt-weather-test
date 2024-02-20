@@ -21,7 +21,7 @@ export interface IFutureDayForecast {
 
 export interface ITransformedForecast {
     today: ITodayForecast;
-    futureForecast: IFutureDayForecast[];
+    futureDays: IFutureDayForecast[];
 }
 
 export const transformForecastData = (list: any[]): ITransformedForecast => {
@@ -35,7 +35,7 @@ export const transformForecastData = (list: any[]): ITransformedForecast => {
     }, {} as { [key: string]: any[] });
 
     const firstItem = list[0];
-    const currentDay: ITodayForecast = {
+    const today: ITodayForecast = {
         currentTemp: toCelcius(firstItem.main.temp),
         description: firstItem.weather[0].description,
         icon: firstItem.weather[0].icon,
@@ -64,7 +64,7 @@ export const transformForecastData = (list: any[]): ITransformedForecast => {
         }));
 
     return {
-        today: currentDay,
-        futureForecast: futureDays,
+        today,
+        futureDays,
     };
 };

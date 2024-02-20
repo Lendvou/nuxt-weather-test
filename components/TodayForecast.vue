@@ -27,11 +27,11 @@
 <script setup lang="ts">
 import type { ITodayForecast } from "../utils/transformWeatherData";
 
-interface IWeatherCardProps {
+interface ITodayForecastProps {
     data: ITodayForecast;
 }
 
-const { data } = defineProps<IWeatherCardProps>();
+const { data } = defineProps<ITodayForecastProps>();
 </script>
 
 <style scoped>

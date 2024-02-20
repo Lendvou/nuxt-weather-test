@@ -6,7 +6,7 @@
 
         <input
             type="text"
-            v-model="city"
+            v-model="cityInput"
             placeholder="City name"
             @keyup.enter="refresh()"
         />
@@ -19,18 +19,16 @@
             <h1 class="city-name">{{ transformedData.city }}</h1>
 
             <TodayForecast
-                :data="transformedData.transformedForecast.today"
+                :data="transformedData.forecast.today"
                 class="today-forecast"
             />
 
             <div class="forecast-days">
                 <FutureForecastCard
-                    v-for="(day, index) in transformedData.transformedForecast
-                        .futureForecast"
+                    v-for="(day, index) in transformedData.forecast.futureDays"
                     :key="day.timestamp"
                     :data="day"
                     class="forecast-days__item"
-                    @click="selectedDay = index"
                 />
             </div>
         </div>
@@ -51,8 +49,7 @@ type FetchResult = {
     city: { name: string };
 };
 
-const city = ref("Moscow");
-const selectedDay = ref(0);
+const cityInput = ref("Moscow");
 
 const {
     data: weather,
@@ -63,7 +60,7 @@ const {
     () =>
         $fetch(`https://api.openweathermap.org/data/2.5/forecast`, {
             query: {
-                q: city.value,
+                q: cityInput.value,
                 appid: "d7d0584939b4e0b8c11b8a755544426a",
                 units: "imperial",
             },
@@ -79,7 +76,7 @@ const transformedData = computed(() => {
     }
     return {
         city: weather.value.city.name,
-        transformedForecast: transformForecastData(weather.value.list),
+        forecast: transformForecastData(weather.value.list),
     };
 });
 </script>
@@ -94,13 +91,17 @@ const transformedData = computed(() => {
     align-items: center;
 }
 input {
-    padding: 10px;
     width: 300px;
     font-size: 20px;
-    border-radius: 10px;
     outline: none;
-    border: 2px solid black;
+    padding: 4px 10px;
     margin-bottom: 30px;
+    border: none;
+    border-bottom: 2px solid black;
+    transition: 150ms;
+}
+input:focus {
+    border-bottom-color: #009bd6;
 }
 .error-message {
     font-size: 40px;
