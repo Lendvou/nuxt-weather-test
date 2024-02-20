@@ -7,15 +7,17 @@
             <h2 class="current-temperature">{{ data.currentTemp }}</h2>
         </div>
         <div class="additional-info">
-            <p class="additional-info__wind">
-                <div
+            <div class="additional-info__wind">
+                <span
+                    class="additional-info__wind-direction"
                     :style="{
                         transform: `rotate(${data.windDeg}deg)`,
                     }"
-                    >&uarr;</div
                 >
-                <span>{{ data.windSpeed }}m/s</span>
-            </p>
+                    ^
+                </span>
+                <p>{{ data.windSpeed }}m/s</p>
+            </div>
             <p>Humidity: {{ data.humidity }}%</p>
         </div>
         <p>{{ data.description }}</p>
@@ -55,15 +57,17 @@ const { data } = defineProps<IWeatherCardProps>();
     display: flex;
     align-items: center;
 }
-.additional-info p {
+.additional-info > p {
     margin-left: 8px;
     margin-right: 8px;
 }
 .additional-info__wind {
     display: flex;
     align-items: center;
+    margin-left: 8px;
+    margin-right: 8px;
 }
-.additional-info__wind > div {
+.additional-info__wind-direction {
     font-size: 30px;
     padding: 10px;
     width: 30px;

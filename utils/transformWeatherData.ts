@@ -1,4 +1,4 @@
-import { getMostFrequentOccurenceOfField } from "./getMostFrequentOccurenceOfField";
+import { getMostFrequentOccurenceInArray } from "./getMostFrequentOccurenceInArray";
 
 const toCelcius = (farenheit: number) => Math.round(((farenheit - 32) * 5) / 9);
 
@@ -34,24 +34,25 @@ export const transformForecastData = (list: any[]): ITransformedForecast => {
         return group;
     }, {} as { [key: string]: any[] });
 
+    const firstItem = list[0];
     const currentDay: ITodayForecast = {
-        currentTemp: toCelcius(list[0].main.temp),
-        description: list[0].weather[0].description,
-        icon: list[0].weather[0].icon,
-        windSpeed: list[0].wind.speed,
-        windDeg: list[0].wind.deg,
-        humidity: list[0].main.humidity,
-        timestamp: list[0].dt_txt.split(" ")[0],
+        currentTemp: toCelcius(firstItem.main.temp),
+        description: firstItem.weather[0].description,
+        icon: firstItem.weather[0].icon,
+        windSpeed: firstItem.wind.speed,
+        windDeg: firstItem.wind.deg,
+        humidity: firstItem.main.humidity,
+        timestamp: firstItem.dt_txt.split(" ")[0],
     };
 
     const futureDays: IFutureDayForecast[] = Object.entries(days)
         .slice(1, 4)
         .map(([timestamp, day]: any) => ({
             timestamp,
-            description: getMostFrequentOccurenceOfField(
+            description: getMostFrequentOccurenceInArray(
                 day.map((item: any) => item.weather[0].description)
             ),
-            icon: getMostFrequentOccurenceOfField(
+            icon: getMostFrequentOccurenceInArray(
                 day.map((item: any) => item.weather[0].icon)
             ),
             maxTemp: toCelcius(

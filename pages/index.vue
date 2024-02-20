@@ -1,5 +1,9 @@
 <template>
     <div class="container">
+        <Head>
+            <Title>Forecast</Title>
+        </Head>
+
         <input
             type="text"
             v-model="city"
@@ -20,7 +24,7 @@
             />
 
             <div class="forecast-days">
-                <WeatherCardMini
+                <FutureForecastCard
                     v-for="(day, index) in transformedData.transformedForecast
                         .futureForecast"
                     :key="day.timestamp"
@@ -36,7 +40,7 @@
 <script setup lang="ts">
 import { transformForecastData } from "../utils/transformWeatherData";
 import TodayForecast from "../components/TodayForecast.vue";
-import WeatherCardMini from "../components/WeatherCardMini.vue";
+import FutureForecastCard from "../components/FutureForecastCard.vue";
 
 type ErrorObj = {
     cod: string;
@@ -47,7 +51,7 @@ type FetchResult = {
     city: { name: string };
 };
 
-const city = ref("Oslo");
+const city = ref("Moscow");
 const selectedDay = ref(0);
 
 const {
@@ -64,7 +68,9 @@ const {
                 units: "imperial",
             },
         }),
-    { pick: ["list", "city"] }
+    {
+        pick: ["list", "city"],
+    }
 );
 
 const transformedData = computed(() => {
