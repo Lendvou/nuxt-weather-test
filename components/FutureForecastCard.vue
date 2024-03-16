@@ -27,6 +27,8 @@ interface IFutureForecastCardProps {
 }
 
 const { data } = defineProps<IFutureForecastCardProps>();
+
+console.log('Future forecast card mount')
 </script>
 
 <style scoped>
